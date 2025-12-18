@@ -62,25 +62,23 @@ input{
 .buttons{
   display:flex;
   flex-wrap:wrap;
-  gap:10px;
+  gap:12px;
   justify-content:center;
 }
 button{
-  padding:12px 18px;
+  padding:14px 22px;
   border:none;
-  border-radius:14px;
+  border-radius:16px;
   cursor:pointer;
   color:white;
-  font-size:14px;
+  font-size:15px;
   font-weight:600;
-  min-width:130px;
+  min-width:180px;
   transition:.2s;
 }
 button:hover{transform:translateY(-2px)}
 .yt{background:#ef4444}
 .mp3{background:#22c55e}
-.ig{background:#e11d48}
-.fb{background:#2563eb}
 
 /* ===== RESULT ===== */
 #result{
@@ -115,14 +113,12 @@ a{color:#38bdf8;font-weight:bold;text-decoration:none}
   </div>
 
   <!-- INPUT -->
-  <input id="input" placeholder="Paste YouTube / Instagram / Facebook link">
+  <input id="input" placeholder="Paste YouTube link only">
 
   <!-- BUTTONS -->
   <div class="buttons">
     <button class="yt" onclick="ytVideo()">YouTube Video</button>
     <button class="mp3" onclick="ytAudio()">YouTube MP3</button>
-    <button class="ig" onclick="instagram()">Instagram</button>
-    <button class="fb" onclick="facebook()">Facebook</button>
   </div>
 
   <!-- RESULT -->
@@ -134,9 +130,8 @@ a{color:#38bdf8;font-weight:bold;text-decoration:none}
 /* ===== TIME & DATE ===== */
 function updateTime(){
   const d = new Date();
-  const t = d.toLocaleTimeString();
-  const date = d.toLocaleDateString();
-  document.getElementById("time").innerText = t + " | " + date;
+  document.getElementById("time").innerText =
+    d.toLocaleTimeString()+" | "+d.toLocaleDateString();
 }
 setInterval(updateTime,1000);
 updateTime();
@@ -164,6 +159,7 @@ function loading(){
 }
 
 async function ytVideo(){
+  if(!input.value) return alert("Paste YouTube link");
   loading();
   const r=await fetch(`${BASE}/downloader/ytmp4?url=`+encodeURIComponent(input.value));
   const j=await r.json();
@@ -176,6 +172,7 @@ async function ytVideo(){
 }
 
 async function ytAudio(){
+  if(!input.value) return alert("Paste YouTube link");
   loading();
   const r=await fetch(`${BASE}/downloader/ytmp3?url=`+encodeURIComponent(input.value));
   const j=await r.json();
@@ -183,30 +180,6 @@ async function ytAudio(){
     result.innerHTML=`<div class="card">
       <b>${j.title}</b><br><br>
       <a href="${j.dl}" target="_blank">🎵 Download MP3</a>
-    </div>`;
-  }else result.innerHTML="<div class='card'>❌ Failed</div>";
-}
-
-async function instagram(){
-  loading();
-  const r=await fetch(`${BASE}/downloader/ig?url=`+encodeURIComponent(input.value));
-  const j=await r.json();
-  result.innerHTML="";
-  j.result.forEach(m=>{
-    result.innerHTML+=`<div class="card">
-      <a href="${m.url}" target="_blank">⬇ Download Media</a>
-    </div>`;
-  });
-}
-
-async function facebook(){
-  loading();
-  const r=await fetch(`${BASE}/downloader/facebook?url=`+encodeURIComponent(input.value));
-  const j=await r.json();
-  if(j.result?.media){
-    const v=j.result.media.video_hd||j.result.media.video_sd;
-    result.innerHTML=`<div class="card">
-      <a href="${v}" target="_blank">⬇ Download Facebook Video</a>
     </div>`;
   }else result.innerHTML="<div class='card'>❌ Failed</div>";
 }
