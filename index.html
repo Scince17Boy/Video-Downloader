@@ -1,189 +1,1011 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Manoj Media Downloader</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#020617" />
+  <title>Manoj Media Downloader Pro</title>
 
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  min-height:100vh;
-  background:radial-gradient(circle at top,#0f172a,#020617 70%);
-  font-family:'Segoe UI',Arial,sans-serif;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+  <style>
+    :root{
+      --bg1:#020617;
+      --bg2:#0b1022;
+      --glass: rgba(255,255,255,.07);
+      --glass2: rgba(2,6,23,.75);
+      --stroke: rgba(255,255,255,.11);
+      --text:#e5e7eb;
+      --muted:#c7d2fe;
+      --info:#38bdf8;
+      --good:#22c55e;
+      --bad:#ef4444;
+      --warn:#f59e0b;
+      --shadow: 0 40px 110px rgba(0,0,0,.75);
+      --r: 22px;
+    }
 
-/* ===== CONTAINER ===== */
-.app{
-  width:100%;
-  max-width:720px;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(18px);
-  border-radius:22px;
-  padding:28px;
-  box-shadow:0 30px 80px rgba(0,0,0,.7);
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 520px at 20% 0%, rgba(56,189,248,.18), transparent 60%),
+        radial-gradient(900px 520px at 80% 0%, rgba(34,197,94,.15), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
 
-/* ===== HEADER ===== */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-.brand{
-  font-size:22px;
-  font-weight:700;
-  letter-spacing:.3px;
-}
-.status{
-  text-align:right;
-  font-size:13px;
-  color:#cbd5f5;
-}
+    .app{
+      width: min(900px, 100%);
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(18px);
+      border-radius: calc(var(--r) + 6px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
 
-/* ===== INPUT ===== */
-input{
-  width:100%;
-  padding:15px;
-  border-radius:14px;
-  border:none;
-  outline:none;
-  font-size:15px;
-  margin-bottom:18px;
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      padding:18px 18px 14px;
+      border-bottom: 1px solid var(--stroke);
+    }
 
-/* ===== BUTTONS ===== */
-.buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  justify-content:center;
-}
-button{
-  padding:14px 22px;
-  border:none;
-  border-radius:16px;
-  cursor:pointer;
-  color:white;
-  font-size:15px;
-  font-weight:600;
-  min-width:180px;
-  transition:.2s;
-}
-button:hover{transform:translateY(-2px)}
-.yt{background:#ef4444}
-.mp3{background:#22c55e}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .logo{
+      width:46px;height:46px;
+      display:grid;place-items:center;
+      border-radius:16px;
+      background: rgba(2,6,23,.75);
+      border:1px solid var(--stroke);
+      flex: 0 0 auto;
+      font-size:20px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .brand p{
+      margin:2px 0 0;
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.35;
+    }
 
-/* ===== RESULT ===== */
-#result{
-  margin-top:18px;
-}
-.card{
-  background:#020617;
-  padding:16px;
-  border-radius:16px;
-  text-align:center;
-  animation:fade .4s ease;
-}
-a{color:#38bdf8;font-weight:bold;text-decoration:none}
+    .status{
+      text-align:right;
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.35;
+      flex: 0 0 auto;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      align-items:center;
+      white-space:nowrap;
+      flex-wrap:wrap;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(2,6,23,.55);
+      border:1px solid var(--stroke);
+    }
 
-@keyframes fade{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-</style>
+    .content{
+      padding:18px;
+      display:grid;
+      gap:14px;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap:14px;
+    }
+    @media (max-width: 880px){
+      .grid2{grid-template-columns:1fr}
+      .status{display:none}
+    }
+
+    .panel{
+      background: rgba(2,6,23,.55);
+      border:1px solid var(--stroke);
+      border-radius: var(--r);
+      padding:14px;
+    }
+    .panel h2{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.2px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .panel .sub{
+      margin:0 0 10px;
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.45;
+    }
+
+    .inputWrap{
+      background: rgba(2,6,23,.55);
+      border:1px solid var(--stroke);
+      border-radius: var(--r);
+      padding:12px;
+      display:grid;
+      gap:10px;
+    }
+
+    .labelRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      color: var(--muted);
+    }
+
+    .fieldRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    input{
+      width:100%;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    input::placeholder{color: rgba(199,210,254,.65)}
+    input:focus{border-color: rgba(56,189,248,.55); box-shadow: 0 0 0 3px rgba(56,189,248,.15)}
+
+    button{
+      border:none;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius:16px;
+      font-weight:900;
+      color:var(--text);
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--stroke);
+      transition: transform .18s ease, opacity .18s ease;
+      user-select:none;
+    }
+    button:hover:not(:disabled){transform: translateY(-2px)}
+    button:disabled{opacity:.55; cursor:not-allowed}
+    button:focus-visible{outline: 3px solid rgba(56,189,248,.30); outline-offset:2px}
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:6px;
+    }
+
+    .primary{
+      min-width: 190px;
+      background: linear-gradient(135deg, rgba(56,189,248,.30), rgba(34,197,94,.22));
+      border-color: rgba(255,255,255,.14);
+    }
+    .videoBtn{
+      min-width: 200px;
+      background: linear-gradient(135deg, rgba(239,68,68,.35), rgba(220,38,38,.25));
+    }
+    .audioBtn{
+      min-width: 200px;
+      background: linear-gradient(135deg, rgba(34,197,94,.30), rgba(22,163,74,.22));
+    }
+
+    select{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      outline:none;
+      font-weight:850;
+    }
+
+    .optRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-start;
+    }
+
+    .consent{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.16);
+      background: rgba(255,255,255,.03);
+      font-size:12px;
+      color: rgba(199,210,254,.92);
+      line-height:1.35;
+    }
+    .consent input{width:18px;height:18px; margin-top:2px}
+    .consent b{color: var(--text)}
+    .mini{
+      font-size:11px;
+      color: rgba(199,210,254,.70);
+      margin-top:6px;
+      line-height:1.45;
+    }
+
+    .result{
+      display:grid;
+      gap:12px;
+    }
+
+    .card{
+      background: rgba(2,6,23,.75);
+      border:1px solid var(--stroke);
+      border-radius: 18px;
+      padding:14px;
+      animation: fade .25s ease;
+      text-align:left;
+    }
+    .card .title{
+      font-weight:950;
+      margin:0 0 4px;
+      letter-spacing:.2px;
+    }
+    .meta{
+      font-size:12px;
+      color: var(--muted);
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:6px;
+      line-height:1.35;
+    }
+    .thumb{
+      width:100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.08);
+      margin:10px 0 8px;
+    }
+
+    .linkRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius: 14px;
+      text-decoration:none;
+      font-weight:950;
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--stroke);
+    }
+    .link.info{border-color: rgba(56,189,248,.35)}
+    .link.good{border-color: rgba(34,197,94,.35)}
+    .link.bad{border-color: rgba(239,68,68,.35)}
+
+    .loader{
+      display:flex; align-items:center; gap:10px;
+      color: var(--muted);
+      font-size:12px;
+    }
+    .spinner{
+      width:16px; height:16px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.20);
+      border-top-color: rgba(56,189,248,.90);
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fade{from{opacity:0; transform: translateY(8px)} to{opacity:1; transform:none}}
+
+    details summary{
+      cursor:pointer;
+      list-style:none;
+      user-select:none;
+      color: var(--text);
+      font-weight:950;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    details summary::-webkit-details-marker{display:none}
+
+    .historyList{
+      margin-top:10px;
+      display:grid;
+      gap:10px;
+    }
+    .histItem{
+      padding:12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      display:grid;
+      gap:6px;
+    }
+    .histTop{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    .histTitle{
+      font-weight:950;
+      font-size:13px;
+      margin:0;
+      line-height:1.25;
+      max-width: 520px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .histMeta{
+      font-size:12px;
+      color: var(--muted);
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      line-height:1.35;
+    }
+    .smallBtns{display:flex; gap:8px; flex-wrap:wrap}
+    .smallBtns button{padding:8px 10px; border-radius:14px; font-weight:950; font-size:12px}
+
+    /* Toasts */
+    .toasts{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      display:grid;
+      gap:10px;
+      z-index: 9999;
+      width: min(360px, calc(100vw - 28px));
+    }
+    .toast{
+      padding:12px 12px;
+      border-radius: 16px;
+      background: rgba(2,6,23,.88);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      animation: fade .2s ease;
+      font-size: 13px;
+      line-height:1.35;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .toast b{display:block; margin-bottom:2px}
+    .t-good{border-color: rgba(34,197,94,.35)}
+    .t-bad{border-color: rgba(239,68,68,.35)}
+    .t-info{border-color: rgba(56,189,248,.35)}
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important}
+    }
+  </style>
 </head>
+
 <body>
+  <div class="app" role="application" aria-label="Manoj Media Downloader Pro">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">📥</div>
+        <div style="min-width:0">
+          <h1>Manoj Media Downloader Pro</h1>
+          <p>Single-file UI • Preview + Resolve via your own lawful backend</p>
+        </div>
+      </div>
 
-<div class="app">
+      <div class="status">
+        <div class="row">
+          <div class="pill" id="netPill">🌐 --</div>
+          <div class="pill" id="batteryPill">🔋 --%</div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div class="pill" id="timePill">⏱ --:--</div>
+        </div>
+      </div>
+    </div>
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="brand">📥 Manoj Media Downloader</div>
-    <div class="status">
-      <div id="time">--:--:--</div>
-      <div id="battery">🔋 --%</div>
+    <div class="content grid2">
+      <!-- LEFT -->
+      <div class="panel">
+        <h2>🔗 Link</h2>
+        <p class="sub">
+          Paste a link to media you own / have permission to download. Preview works for most links,
+          and YouTube preview uses official oEmbed metadata only.
+        </p>
+
+        <div class="inputWrap">
+          <div class="labelRow">
+            <span id="hint">Tip: Paste → Preview → Resolve</span>
+            <span id="liveInfo">Status: Ready</span>
+          </div>
+
+          <div class="fieldRow">
+            <input id="urlInput" placeholder="Paste a link (https://...)" inputmode="url" autocomplete="off" />
+            <button id="pasteBtn" type="button" title="Paste from clipboard">📋</button>
+            <button id="clearBtn" type="button" title="Clear">✖</button>
+          </div>
+
+          <div class="optRow">
+            <label class="pill" style="gap:8px">
+              🎚 Quality
+              <select id="quality">
+                <option value="auto">Auto</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </label>
+
+            <label class="pill" style="gap:8px">
+              🧾 Default
+              <select id="format">
+                <option value="video">Video</option>
+                <option value="audio">Audio</option>
+              </select>
+            </label>
+
+            <button id="previewBtn" class="primary" type="button">👁 Preview</button>
+          </div>
+
+          <label class="consent">
+            <input id="consent" type="checkbox" />
+            <div>
+              <b>I confirm</b> I have the rights/permission to download this media.
+              <div class="mini">
+                This UI does not bypass protections. “Resolve” calls <b>your own backend</b> (you set it below in code).
+              </div>
+            </div>
+          </label>
+
+          <div class="actions">
+            <button id="videoBtn" class="videoBtn" type="button">🎬 Resolve Video</button>
+            <button id="audioBtn" class="audioBtn" type="button">🎵 Resolve Audio</button>
+          </div>
+
+          <div class="mini">
+            🔧 Setup: edit <b>API_BASE</b> inside the script. Backend contract is shown in code comments.
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="panel">
+        <h2>📦 Result</h2>
+        <p class="sub">Shows preview + resolved download link + local history.</p>
+        <div id="result" class="result"></div>
+
+        <details style="margin-top:12px">
+          <summary>🕘 History (local)</summary>
+          <div id="historyList" class="historyList"></div>
+          <div class="row" style="margin-top:10px; justify-content:flex-end">
+            <button id="clearHistoryBtn" type="button">🧹 Clear History</button>
+          </div>
+        </details>
+      </div>
     </div>
   </div>
 
-  <!-- INPUT -->
-  <input id="input" placeholder="Paste YouTube link only">
-
-  <!-- BUTTONS -->
-  <div class="buttons">
-    <button class="yt" onclick="ytVideo()">YouTube Video</button>
-    <button class="mp3" onclick="ytAudio()">YouTube MP3</button>
-  </div>
-
-  <!-- RESULT -->
-  <div id="result"></div>
-
-</div>
+  <div class="toasts" id="toasts" aria-live="polite" aria-relevant="additions"></div>
 
 <script>
-/* ===== TIME & DATE ===== */
-function updateTime(){
-  const d = new Date();
-  document.getElementById("time").innerText =
-    d.toLocaleTimeString()+" | "+d.toLocaleDateString();
-}
-setInterval(updateTime,1000);
-updateTime();
+(() => {
+  "use strict";
 
-/* ===== BATTERY ===== */
-if(navigator.getBattery){
-  navigator.getBattery().then(b=>{
-    function update(){
-      document.getElementById("battery").innerText =
-        "🔋 " + Math.round(b.level*100) + "%";
+  /*****************
+   * CONFIG (EDIT THIS)
+   *****************/
+  // Put your own lawful backend base URL here (same origin recommended):
+  // Example: const API_BASE = "https://your-domain.com";
+  const API_BASE = "";
+
+  // Backend contract (you implement):
+  // POST  ${API_BASE}/api/resolve
+  // body: { url, kind: "video"|"audio", quality: "auto|high|medium|low" }
+  // response example:
+  // { ok:true, title, thumbnail, durationSec, source, downloadUrl }
+  //
+  // NOTE: This file intentionally does NOT implement YouTube ripping/extraction.
+
+  /*****************
+   * DOM
+   *****************/
+  const urlInput = document.getElementById("urlInput");
+  const pasteBtn = document.getElementById("pasteBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const previewBtn = document.getElementById("previewBtn");
+  const videoBtn = document.getElementById("videoBtn");
+  const audioBtn = document.getElementById("audioBtn");
+  const qualitySel = document.getElementById("quality");
+  const formatSel = document.getElementById("format");
+  const consent = document.getElementById("consent");
+  const result = document.getElementById("result");
+  const toasts = document.getElementById("toasts");
+  const netPill = document.getElementById("netPill");
+  const batteryPill = document.getElementById("batteryPill");
+  const timePill = document.getElementById("timePill");
+  const liveInfo = document.getElementById("liveInfo");
+  const historyList = document.getElementById("historyList");
+  const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+  const HISTORY_KEY = "manoj_md_history_singlefile_v1";
+
+  /*****************
+   * UTILS
+   *****************/
+  function escapeHTML(str){
+    return String(str ?? "").replace(/[&<>"']/g, s => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[s]));
+  }
+
+  function toast(type, title, msg){
+    const div = document.createElement("div");
+    div.className = `toast ${type}`;
+    div.innerHTML = `<div>🔔</div><div><b>${escapeHTML(title)}</b>${escapeHTML(msg)}</div>`;
+    toasts.appendChild(div);
+    setTimeout(() => div.remove(), 3200);
+  }
+
+  function setBusy(on, label="Working..."){
+    videoBtn.disabled = on;
+    audioBtn.disabled = on;
+    previewBtn.disabled = on;
+    pasteBtn.disabled = on;
+    clearBtn.disabled = on;
+    qualitySel.disabled = on;
+    formatSel.disabled = on;
+    consent.disabled = on;
+    liveInfo.textContent = on ? `Status: ${label}` : "Status: Ready";
+  }
+
+  function normalizeUrl(raw){
+    const s = String(raw || "").trim();
+    if(!s) return null;
+    try{
+      return new URL(s).toString();
+    }catch{
+      try{
+        return new URL("https://" + s).toString();
+      }catch{
+        return null;
+      }
     }
-    update();
-    b.addEventListener("levelchange",update);
+  }
+
+  function isYouTube(u){
+    try{
+      const host = new URL(u).hostname.replace(/^www\./,"").toLowerCase();
+      return host === "youtube.com" || host === "youtu.be" || host.endsWith(".youtube.com");
+    }catch{ return false; }
+  }
+
+  function formatDuration(sec){
+    if(!Number.isFinite(sec) || sec <= 0) return null;
+    const s = Math.floor(sec);
+    const h = Math.floor(s/3600);
+    const m = Math.floor((s%3600)/60);
+    const r = s%60;
+    if(h) return `${h}h ${m}m ${r}s`;
+    if(m) return `${m}m ${r}s`;
+    return `${r}s`;
+  }
+
+  async function fetchJSON(url, options={}, timeoutMs=15000){
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), timeoutMs);
+    try{
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      const text = await res.text();
+      let data = null;
+      try{ data = JSON.parse(text); }catch{ data = { raw:text }; }
+      if(!res.ok){
+        const msg = data?.message || data?.error || `HTTP ${res.status}`;
+        throw new Error(msg);
+      }
+      return data;
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  function showLoader(msg="Processing..."){
+    result.innerHTML = `
+      <div class="card">
+        <div class="loader"><span class="spinner"></span> ${escapeHTML(msg)}</div>
+      </div>
+    `;
+  }
+
+  function showError(msg){
+    result.innerHTML = `
+      <div class="card">
+        <p class="title">❌ Failed</p>
+        <div class="meta">${escapeHTML(msg)}</div>
+      </div>
+    `;
+  }
+
+  function showPreviewCard({title, thumbnail, source, durationSec, note}){
+    const dur = formatDuration(durationSec);
+    result.innerHTML = `
+      <div class="card">
+        <p class="title">${escapeHTML(title || "Preview")}</p>
+        <div class="meta">
+          ${source ? `<span>🔗 ${escapeHTML(source)}</span>` : ""}
+          ${dur ? `<span>⏱ ${escapeHTML(dur)}</span>` : ""}
+          ${note ? `<span>ℹ️ ${escapeHTML(note)}</span>` : ""}
+        </div>
+        ${thumbnail ? `<img class="thumb" src="${escapeHTML(thumbnail)}" alt="thumbnail" />` : ""}
+        <div class="linkRow">
+          ${source ? `<a class="link info" href="${escapeHTML(source)}" target="_blank" rel="noreferrer">↗ Open Source</a>` : ""}
+          <a class="link" href="javascript:void(0)" id="copySourceBtn">📎 Copy Link</a>
+          ${navigator.share ? `<a class="link" href="javascript:void(0)" id="shareBtn">📤 Share</a>` : ""}
+        </div>
+      </div>
+    `;
+
+    document.getElementById("copySourceBtn")?.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(source || "");
+        toast("t-info","Copied","Link copied to clipboard.");
+      }catch{
+        toast("t-bad","Oops","Clipboard blocked by browser.");
+      }
+    });
+
+    document.getElementById("shareBtn")?.addEventListener("click", async () => {
+      try{
+        await navigator.share({ title: title || "Link", url: source || "" });
+      }catch{}
+    });
+  }
+
+  function showResolvedCard({title, thumbnail, source, durationSec, kind, downloadUrl}){
+    const dur = formatDuration(durationSec);
+    const kindIcon = kind === "audio" ? "🎵" : "🎬";
+    result.innerHTML = `
+      <div class="card">
+        <p class="title">${kindIcon} ${escapeHTML(title || "Ready")}</p>
+        <div class="meta">
+          ${source ? `<span>🔗 ${escapeHTML(source)}</span>` : ""}
+          ${dur ? `<span>⏱ ${escapeHTML(dur)}</span>` : ""}
+          <span>✅ Resolved by backend</span>
+        </div>
+        ${thumbnail ? `<img class="thumb" src="${escapeHTML(thumbnail)}" alt="thumbnail" />` : ""}
+        <div class="linkRow">
+          <a class="link good" href="${escapeHTML(downloadUrl)}" target="_blank" rel="noreferrer">⬇ Download</a>
+          ${source ? `<a class="link info" href="${escapeHTML(source)}" target="_blank" rel="noreferrer">↗ Open Source</a>` : ""}
+          <a class="link" href="javascript:void(0)" id="copyDlBtn">📎 Copy Download Link</a>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("copyDlBtn")?.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(downloadUrl || "");
+        toast("t-info","Copied","Download link copied.");
+      }catch{
+        toast("t-bad","Oops","Clipboard blocked.");
+      }
+    });
+  }
+
+  /*****************
+   * HISTORY
+   *****************/
+  function loadHistory(){
+    try{
+      const arr = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+      return Array.isArray(arr) ? arr : [];
+    }catch{ return []; }
+  }
+
+  function saveHistory(arr){
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(0, 12)));
+  }
+
+  function addHistory(item){
+    const arr = loadHistory();
+    arr.unshift(item);
+    // de-dup by downloadUrl
+    const seen = new Set();
+    const clean = [];
+    for(const it of arr){
+      const key = it.downloadUrl || (it.source + "|" + it.kind);
+      if(seen.has(key)) continue;
+      seen.add(key);
+      clean.push(it);
+    }
+    saveHistory(clean);
+  }
+
+  function renderHistory(){
+    const arr = loadHistory();
+    if(arr.length === 0){
+      historyList.innerHTML = `<div class="histItem"><div class="histMeta">No history yet.</div></div>`;
+      return;
+    }
+
+    historyList.innerHTML = arr.map((it, idx) => {
+      const t = new Date(it.time || Date.now()).toLocaleString();
+      const icon = it.kind === "audio" ? "🎵" : "🎬";
+      return `
+        <div class="histItem">
+          <div class="histTop">
+            <div style="min-width:0">
+              <p class="histTitle" title="${escapeHTML(it.title || "")}">${icon} ${escapeHTML(it.title || "Item")}</p>
+              <div class="histMeta">
+                <span>🕒 ${escapeHTML(t)}</span>
+                ${it.source ? `<span>🔗 source</span>` : ""}
+                ${it.downloadUrl ? `<span>⬇ link</span>` : ""}
+              </div>
+            </div>
+            <div class="smallBtns">
+              ${it.downloadUrl ? `<button data-act="copy" data-i="${idx}">Copy</button>` : ""}
+              ${it.source ? `<button data-act="open" data-i="${idx}">Open</button>` : ""}
+              <button data-act="del" data-i="${idx}">Del</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    historyList.querySelectorAll("button[data-act]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const act = btn.getAttribute("data-act");
+        const i = Number(btn.getAttribute("data-i"));
+        const arr2 = loadHistory();
+        const it = arr2[i];
+        if(!it) return;
+
+        if(act === "copy"){
+          try{
+            await navigator.clipboard.writeText(it.downloadUrl || "");
+            toast("t-info","Copied","Download link copied.");
+          }catch{
+            toast("t-bad","Oops","Clipboard blocked.");
+          }
+        }else if(act === "open"){
+          window.open(it.source, "_blank", "noopener,noreferrer");
+        }else if(act === "del"){
+          arr2.splice(i,1);
+          saveHistory(arr2);
+          renderHistory();
+          toast("t-info","Deleted","History item removed.");
+        }
+      });
+    });
+  }
+
+  /*****************
+   * PREVIEW (safe metadata)
+   *****************/
+  async function preview(){
+    const u = normalizeUrl(urlInput.value);
+    if(!u){
+      toast("t-bad","Invalid URL","Please paste a valid link.");
+      showError("Invalid URL.");
+      return;
+    }
+
+    showLoader("Loading preview...");
+    setBusy(true, "Previewing...");
+
+    // YouTube preview via official oEmbed (metadata only)
+    if(isYouTube(u)){
+      try{
+        const o = await fetchJSON(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(u)}`, {}, 9000);
+        showPreviewCard({
+          title: o.title || "YouTube Preview",
+          thumbnail: o.thumbnail_url || null,
+          source: u,
+          durationSec: null,
+          note: "YouTube metadata (oEmbed)"
+        });
+        toast("t-info","Preview ready","YouTube metadata loaded.");
+      }catch{
+        showPreviewCard({ title: "Preview", thumbnail: null, source: u, durationSec: null, note: "Basic preview" });
+        toast("t-info","Preview","Could not fetch oEmbed, showing basic preview.");
+      }finally{
+        setBusy(false);
+      }
+      return;
+    }
+
+    // Generic preview
+    showPreviewCard({ title: "Preview", thumbnail: null, source: u, durationSec: null, note: "Basic preview" });
+    setBusy(false);
+  }
+
+  /*****************
+   * RESOLVE via YOUR backend
+   *****************/
+  async function resolve(kind){
+    const u = normalizeUrl(urlInput.value);
+    if(!u){
+      toast("t-bad","Invalid URL","Please paste a valid link.");
+      showError("Invalid URL.");
+      return;
+    }
+
+    if(!consent.checked){
+      toast("t-bad","Permission required","Please tick the consent checkbox first.");
+      return;
+    }
+
+    if(!API_BASE){
+      toast("t-bad","Backend not set","Edit API_BASE in the script first.");
+      showError("API_BASE is empty. Set your backend URL in the code.");
+      return;
+    }
+
+    showLoader("Contacting backend...");
+    setBusy(true, "Resolving...");
+
+    try{
+      const payload = { url: u, kind, quality: qualitySel.value };
+
+      const data = await fetchJSON(`${API_BASE.replace(/\/$/,"")}/api/resolve`, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(payload)
+      }, 20000);
+
+      if(!data?.ok || !data?.downloadUrl){
+        throw new Error(data?.message || "Invalid backend response.");
+      }
+
+      showResolvedCard({
+        title: data.title || "Ready",
+        thumbnail: data.thumbnail || null,
+        source: data.source || u,
+        durationSec: Number(data.durationSec) || null,
+        kind,
+        downloadUrl: data.downloadUrl
+      });
+
+      addHistory({
+        time: Date.now(),
+        kind,
+        title: data.title || "Ready",
+        source: data.source || u,
+        downloadUrl: data.downloadUrl
+      });
+
+      toast("t-good","Ready","Download link generated.");
+    }catch(err){
+      showError(String(err?.message || err || "Failed"));
+      toast("t-bad","Failed", String(err?.message || "Backend error"));
+    }finally{
+      setBusy(false);
+      renderHistory();
+    }
+  }
+
+  /*****************
+   * STATUS (time/net/battery)
+   *****************/
+  function updateTime(){
+    const d = new Date();
+    timePill.textContent = "⏱ " + d.toLocaleTimeString() + " | " + d.toLocaleDateString();
+  }
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  function updateNet(){
+    const online = navigator.onLine;
+    let label = online ? "🟢 Online" : "🔴 Offline";
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if(conn?.effectiveType) label += ` (${conn.effectiveType})`;
+    netPill.textContent = "🌐 " + label;
+  }
+  window.addEventListener("online", updateNet);
+  window.addEventListener("offline", updateNet);
+  updateNet();
+
+  if(navigator.getBattery){
+    navigator.getBattery().then(b => {
+      const update = () => batteryPill.textContent = "🔋 " + Math.round(b.level * 100) + "%";
+      update();
+      b.addEventListener("levelchange", update);
+      b.addEventListener("chargingchange", update);
+    }).catch(() => batteryPill.textContent = "🔋 N/A");
+  } else {
+    batteryPill.textContent = "🔋 N/A";
+  }
+
+  /*****************
+   * EVENTS
+   *****************/
+  previewBtn.addEventListener("click", preview);
+
+  videoBtn.addEventListener("click", () => resolve("video"));
+  audioBtn.addEventListener("click", () => resolve("audio"));
+
+  // Quick action by default select (optional)
+  formatSel.addEventListener("change", () => {
+    // no auto-resolve; just for user preference
   });
-}else{
-  document.getElementById("battery").innerText = "🔋 N/A";
-}
 
-/* ===== API ===== */
-const BASE="https://okatsu-rolezapiiz.vercel.app";
-const result=document.getElementById("result");
+  pasteBtn.addEventListener("click", async () => {
+    try{
+      const text = await navigator.clipboard.readText();
+      if(text){
+        urlInput.value = text.trim();
+        toast("t-info","Pasted","Clipboard pasted.");
+      } else {
+        toast("t-bad","Empty","Clipboard empty.");
+      }
+    }catch{
+      toast("t-bad","Blocked","Clipboard permission denied.");
+    }
+  });
 
-function loading(){
-  result.innerHTML="<div class='card'>⏳ Processing...</div>";
-}
+  clearBtn.addEventListener("click", () => {
+    urlInput.value = "";
+    result.innerHTML = "";
+    toast("t-info","Cleared","Input cleared.");
+  });
 
-async function ytVideo(){
-  if(!input.value) return alert("Paste YouTube link");
-  loading();
-  const r=await fetch(`${BASE}/downloader/ytmp4?url=`+encodeURIComponent(input.value));
-  const j=await r.json();
-  if(j.result?.mp4){
-    result.innerHTML=`<div class="card">
-      <b>${j.result.title}</b><br><br>
-      <a href="${j.result.mp4}" target="_blank">⬇ Download MP4</a>
-    </div>`;
-  }else result.innerHTML="<div class='card'>❌ Failed</div>";
-}
+  urlInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter"){
+      preview();
+    }
+  });
 
-async function ytAudio(){
-  if(!input.value) return alert("Paste YouTube link");
-  loading();
-  const r=await fetch(`${BASE}/downloader/ytmp3?url=`+encodeURIComponent(input.value));
-  const j=await r.json();
-  if(j.dl){
-    result.innerHTML=`<div class="card">
-      <b>${j.title}</b><br><br>
-      <a href="${j.dl}" target="_blank">🎵 Download MP3</a>
-    </div>`;
-  }else result.innerHTML="<div class='card'>❌ Failed</div>";
-}
+  clearHistoryBtn.addEventListener("click", () => {
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
+    toast("t-info","Cleared","History cleared.");
+  });
+
+  // Initial render
+  renderHistory();
+
+})();
 </script>
-
 </body>
 </html>
