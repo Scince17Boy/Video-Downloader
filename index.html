@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Institute Bill Management</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <header class="header">
+    <h1>🏫 Institute Bill Management</h1>
+    <p>Simple • Secure • Professional</p>
+  </header>
+
+  <!-- LOGIN -->
+  <div class="login-box" id="loginPage">
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="mainPage" class="container" style="display:none;">
+    
+    <div class="card">
+      <h3>Add Student Bill</h3>
+      <input type="text" id="studentName" placeholder="Student Name">
+      <input type="text" id="course" placeholder="Course">
+      <input type="date" id="month">
+      <input type="number" id="amount" placeholder="Amount">
+      <select id="status">
+        <option value="Paid">Paid</option>
+        <option value="Unpaid">Unpaid</option>
+      </select>
+      <button onclick="addBill()">Add Bill</button>
+    </div>
+
+    <div class="card">
+      <input type="text" id="searchInput" placeholder="Search by name or month..." onkeyup="renderBills()">
+    </div>
+
+    <div class="card table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+        <tbody id="billTable"></tbody>
+      </table>
+    </div>
+
+    <div class="summary">
+      <div>Total Bills<br><span id="totalBills">0</span></div>
+      <div>Paid<br>₹<span id="totalPaid">0</span></div>
+      <div>Unpaid<br>₹<span id="totalUnpaid">0</span></div>
+    </div>
+
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
